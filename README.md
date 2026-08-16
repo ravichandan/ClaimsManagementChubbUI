@@ -1,59 +1,220 @@
-# ClaimsManagementUI
+# Claims Management UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.21.
+Angular frontend for the Claims Management application.
 
-## Development server
+The UI provides a simple interface for claimants, claims officers and managers to work with claims. The focus of this application is not on building a complex UI, but on keeping the user journeys clear and making the frontend easy to maintain.
 
-To start a local development server, run:
+## What the UI covers
 
-```bash
-ng serve
+Current plan is the application focuses on the main claim lifecycle:
+
+* Create and submit a claim
+* View claims and their current status
+* View claim details
+* Assign claims to claims officers
+* Record an assessment
+* Approve or reject a claim
+* View claim status history
+* View team workload and outstanding claims
+
+The same Angular application is used by the different user types. The screens and available actions can be controlled based on the user's role.
+
+But given the time contraints, I dont think I can complete it whole as the frontend is given lower priority than backend.
+
+## Tech stack
+
+* Angular
+* TypeScript
+* Angular Router
+* Angular HttpClient
+* Reactive Forms
+* CSS
+* REST APIs exposed by the Spring Boot backend
+
+## Project structure
+
+The frontend is organised around business features rather than technical layers.
+
+```text
+src/app/
+
+├── core/
+│   ├── services/
+│   └── interceptors/
+│
+├── shared/
+│   └── components/
+│
+├── features/
+│   ├── claims/
+│   │   ├── components/
+│   │   │   ├── claim-list/
+│   │   │   ├── claim-detail/
+│   │   │   └── claim-form/
+│   │   └── services/
+│   │       └── claim.service.ts
+│   │
+│   ├── workload/
+│   │   ├── components/
+│   │   │   └── workload-dashboard/
+│   │   └── services/
+│   │       └── workload.service.ts
+│   │
+│   └── dashboard/
+│       └── dashboard.component.ts
+│
+├── app.component.ts
+├── app.config.ts
+└── app.routes.ts
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+I have kept the structure deliberately simple. As the application grows, new functionality can be added as a feature without making the rest of the application harder to navigate.
 
-## Code scaffolding
+## Main screens
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Claims
 
-```bash
-ng generate component component-name
+The claims screen provides a list of claims and officer assigned to that
+
+### Claim details
+
+The claim details screen brings together the information needed to work on a claim:
+
+
+The available actions depend on the current claim status and the user's role.
+
+### Workload
+
+The workload screen is aimed at claims officers and managers.
+
+It provides a simple view of:
+
+* Number of claims assigned to each officer
+* Claims currently under assessment
+* Unassigned claims
+* Outstanding claims
+* Overall claim workload
+
+The intention is to give managers a quick view rather than build a full reporting platform.
+
+## API integration
+
+The frontend communicates with the backend through REST APIs.
+
+For example:
+
+```text
+GET  /api/v1/claims
+GET  /api/v1/claims/{id}
+POST /api/v1/claims
+POST /api/v1/claims/{id}/assignment
+POST /api/v1/claims/{id}/assessments
+GET  /api/v1/workload
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+API calls are kept inside feature-specific services rather than being made directly from components.
 
-```bash
-ng generate --help
+For example:
+
+```text
+ClaimComponent
+      |
+      v
+ClaimService
+      |
+      v
+HttpClient
+      |
+      v
+Spring Boot REST API
 ```
 
-## Building
+This keeps components focused on presentation and user interaction.
 
-To build the project run:
+## Error handling
 
-```bash
-ng build
+The UI handles common API errors and presents a user-friendly message rather than exposing raw backend errors.
+
+For example:
+
+```text
+400 - Validation error
+404 - Claim not found
+409 - Claim has been updated by someone else
+500 - Unexpected server error
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The API's error response is treated as a contract between the frontend and backend.
 
-## Running unit tests
+## Configuration
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+The backend URL should be configurable rather than hard-coded into individual services.
 
-```bash
-ng test
+For example:
+
+```text
+API_URL=http://localhost:8080/api/v1
 ```
 
-## Running end-to-end tests
+This allows the same frontend to be used against local, test and other environments without changing application code.
 
-For end-to-end (e2e) testing, run:
+## Running locally
+
+Install the required dependencies:
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Start the development server:
 
-## Additional Resources
+```bash
+npm start
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The application should then be available through the Angular development server.
+
+The Spring Boot backend needs to be running separately for the claim APIs to work.
+
+## Design decisions
+
+### Feature-based structure
+
+The application is organised around business features such as claims and workload. This makes it easier to locate related components, services and models.
+
+### Thin components
+
+Components should primarily deal with presentation and user interaction. API calls and reusable application logic belong in services.
+
+### Backend owns business rules
+
+The frontend provides validation and a good user experience, but it does not become the source of truth for claim processing rules.
+
+### Simple state management
+
+The application does not introduce a heavyweight state-management library for the current scope. Most of the data is request-driven and can be managed using Angular services, observables/signals and component state.
+
+A more sophisticated state-management solution can be introduced later if the application develops more complex cross-feature state.
+
+### Same application for different roles
+
+Claimants, claims officers and managers use the same Angular application. Role-specific behaviour is handled through routing and permissions rather than maintaining separate applications.
+
+## Scope and future improvements
+
+The current UI is intentionally focused on the main business flows required for the assessment.
+
+For a production implementation, I would consider adding:
+
+* Authentication through the organisation's identity provider
+* Role-based route guards and permissions
+* More comprehensive accessibility support
+* Claim document upload and preview
+* Advanced filtering and pagination
+* Notifications
+* More detailed management dashboards
+* Better handling of long-running asynchronous operations
+* Automated component and end-to-end tests
+* Improved responsive/mobile layouts
+
+The goal of this frontend is to provide a clean working interface around the core claims workflow without spending disproportionate effort on UI complexity.
