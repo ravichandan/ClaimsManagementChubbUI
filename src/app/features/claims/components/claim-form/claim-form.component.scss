@@ -1,0 +1,165 @@
+:host {
+  display: block;
+}
+
+.claim-form {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.form-heading,
+.form-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.eyebrow {
+  color: #b64f30;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.45rem;
+  text-transform: uppercase;
+}
+
+h2 {
+  color: #1e2a2f;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.required-note,
+.form-actions p {
+  color: #66757a;
+  font-size: 0.78rem;
+  margin: 0;
+}
+
+fieldset {
+  border: 0;
+  border-top: 1px solid #dfe4e3;
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 1.25rem 0 0;
+}
+
+legend {
+  color: #314045;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 0 0.75rem 0 0;
+}
+
+.form-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+label {
+  color: #425257;
+  display: grid;
+  font-size: 0.78rem;
+  font-weight: 700;
+  gap: 0.45rem;
+}
+
+input,
+select,
+textarea {
+  background: #fbfcfa;
+  border: 1px solid #cbd5d3;
+  border-radius: 4px;
+  color: #1e2a2f;
+  font: inherit;
+  font-size: 0.92rem;
+  min-height: 2.85rem;
+  padding: 0.7rem 0.8rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+  width: 100%;
+}
+
+textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a989a;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #1d7370;
+  box-shadow: 0 0 0 3px rgba(29, 115, 112, 0.14);
+  outline: 0;
+}
+
+.input-prefix {
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.input-prefix > span {
+  color: #66757a;
+  left: 0.8rem;
+  position: absolute;
+}
+
+.input-prefix input {
+  padding-left: 1.65rem;
+}
+
+.error {
+  color: #ae382d;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.form-actions {
+  align-items: center;
+  border-top: 1px solid #dfe4e3;
+  padding-top: 1.25rem;
+}
+
+button {
+  background: #1d7370;
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  padding: 0.8rem 1.1rem;
+}
+
+button:hover {
+  background: #155b59;
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(29, 115, 112, 0.3);
+  outline-offset: 3px;
+}
+
+@media (max-width: 620px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-heading,
+  .form-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

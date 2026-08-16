@@ -1,0 +1,36 @@
+<section class="list-panel" aria-labelledby="recent-claims-heading">
+  <div class="list-heading">
+    <div>
+      <p class="eyebrow">Live queue</p>
+      <h2 id="recent-claims-heading">Recent claims</h2>
+    </div>
+    <button type="button" class="view-button">View all <span aria-hidden="true">-&gt;</span></button>
+  </div>
+
+  <div class="claim-table" role="table" aria-label="Recent claims">
+    <div class="table-row table-header" role="row">
+      <span role="columnheader">Claim</span>
+      <span role="columnheader">Claimant</span>
+      <span role="columnheader">Amount</span>
+      <span role="columnheader">Status</span>
+    </div>
+    @for (claim of claims(); track claim.id) {
+      <div class="table-row" role="row">
+        <div class="claim-reference" role="cell">
+          <strong>{{ claim.id }}</strong>
+          <span>{{ claim.claimType }}</span>
+        </div>
+        <div class="claimant" role="cell">
+          <strong>{{ claim.claimantName }}</strong>
+          <span>{{ claim.location }}</span>
+        </div>
+        <strong role="cell">{{ claim.amount | currency: 'USD' : 'symbol' : '1.0-0' }}</strong>
+        <span class="status" [class.status-review]="claim.status === 'Under review'" [class.status-approved]="claim.status === 'Approved'" role="cell">
+          <span class="status-dot" aria-hidden="true"></span>{{ claim.status }}
+        </span>
+      </div>
+    } @empty {
+      <p class="empty-state">No claims have been submitted yet.</p>
+    }
+  </div>
+</section>

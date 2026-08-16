@@ -1,0 +1,81 @@
+:host {
+	display: block;
+	min-height: 100dvh;
+}
+
+.app-header {
+	align-items: center;
+	background: #fff;
+	border-bottom: 1px solid #dfe4e3;
+	display: flex;
+	justify-content: space-between;
+	padding: 0.9rem clamp(1.25rem, 4vw, 4rem);
+}
+
+.brand,
+nav,
+.user-menu {
+	align-items: center;
+	display: flex;
+}
+
+.brand {
+	color: #1e2a2f;
+	font-size: 0.92rem;
+	font-weight: 800;
+	gap: 0.65rem;
+	text-decoration: none;
+}
+
+.brand-mark {
+	align-items: center;
+	background: #1e4244;
+	color: #f8f7f1;
+	display: inline-flex;
+	font-family: 'Fraunces', Georgia, serif;
+	font-size: 0.9rem;
+	height: 2rem;
+	justify-content: center;
+	width: 2rem;
+}
+
+nav {
+	gap: 1.5rem;
+}
+
+nav a {
+	color: #78868a;
+	font-size: 0.8rem;
+	font-weight: 800;
+	text-decoration: none;
+}
+
+nav a:hover,
+nav a.active {
+	color: #1d7370;
+}
+
+.user-menu {
+	background: #f0f3f1;
+	border-radius: 999px;
+	color: #1e4244;
+	font-size: 0.7rem;
+	font-weight: 800;
+	gap: 0.45rem;
+	padding: 0.45rem 0.7rem;
+}
+
+.user-name {
+	color: #66757a;
+	font-weight: 600;
+}
+
+@media (max-width: 620px) {
+	.user-name {
+		display: none;
+	}
+
+	nav {
+		gap: 0.85rem;
+	}
+}

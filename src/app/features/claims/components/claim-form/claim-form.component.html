@@ -1,0 +1,66 @@
+<form class="claim-form" [formGroup]="claimForm" (ngSubmit)="submitClaim()" novalidate>
+  <div class="form-heading">
+    <div>
+      <p class="eyebrow">New claim</p>
+      <h2>Tell us what happened</h2>
+    </div>
+    <span class="required-note">All fields required</span>
+  </div>
+
+  <fieldset>
+    <legend>Claimant details</legend>
+    <div class="form-grid">
+      <label>
+        Full name
+        <input type="text" formControlName="claimantName" placeholder="e.g. Alex Morgan" autocomplete="name" />
+        @if (claimForm.controls.claimantName.touched && claimForm.controls.claimantName.invalid) {
+          <span class="error">Enter the claimant's name.</span>
+        }
+      </label>
+      <label>
+        Email address
+        <input type="email" formControlName="claimantEmail" placeholder="name@example.com" autocomplete="email" />
+        @if (claimForm.controls.claimantEmail.touched && claimForm.controls.claimantEmail.invalid) {
+          <span class="error">Enter a valid email address.</span>
+        }
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Incident details</legend>
+    <div class="form-grid">
+      <label>
+        Claim type
+        <select formControlName="claimType">
+          <option>Vehicle</option>
+          <option>Property</option>
+        </select>
+      </label>
+      <label>
+        Date of incident
+        <input type="date" formControlName="incidentDate" />
+      </label>
+      <label>
+        Incident location
+        <input type="text" formControlName="location" placeholder="City or town" />
+      </label>
+      <label>
+        Estimated amount
+        <span class="input-prefix"><span aria-hidden="true">$</span><input type="number" formControlName="amount" min="1" step="0.01" placeholder="0.00" /></span>
+      </label>
+    </div>
+    <label>
+      What happened?
+      <textarea formControlName="description" rows="4" placeholder="Give a clear summary of the incident and the loss..."></textarea>
+      @if (claimForm.controls.description.touched && claimForm.controls.description.invalid) {
+        <span class="error">Add at least 20 characters so the claim can be reviewed.</span>
+      }
+    </label>
+  </fieldset>
+
+  <div class="form-actions">
+    <p>Claims are usually reviewed within two working days.</p>
+    <button type="submit">Submit claim <span aria-hidden="true">-&gt;</span></button>
+  </div>
+</form>

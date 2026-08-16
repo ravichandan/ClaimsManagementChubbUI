@@ -1,0 +1,56 @@
+<main class="page-shell">
+  <section class="hero" aria-labelledby="page-title">
+    <div>
+      <p class="eyebrow">Claims operations / Intake</p>
+      <h1 id="page-title">Make a claim</h1>
+      <p class="hero-copy">Capture the essentials now. Our claims team will take it from here.</p>
+    </div>
+    <div class="hero-mark" aria-hidden="true">
+      <span>CM</span>
+      <span class="mark-line"></span>
+    </div>
+  </section>
+
+  @if (confirmationMessage()) {
+    <div class="confirmation" role="status">
+      <span class="confirmation-icon" aria-hidden="true">✓</span>
+      <span>{{ confirmationMessage() }}</span>
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="api-error" role="alert">
+      <span>{{ errorMessage() }}</span>
+      <button type="button" (click)="retryLoadingClaims()">Try again</button>
+    </div>
+  }
+
+  <section class="metrics" aria-label="Claims overview">
+    <div class="metric-card">
+      <span class="metric-label">Open claims</span>
+      <strong>{{ isLoading() ? '...' : claims().length }}</strong>
+      <span class="metric-note">Across all statuses</span>
+    </div>
+    <div class="metric-card accent-card">
+      <span class="metric-label">Under review</span>
+      <strong>{{ claimsUnderReview() }}</strong>
+      <span class="metric-note">Needs team attention</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-label">Average response</span>
+      <strong>2 days</strong>
+      <span class="metric-note">Our current target</span>
+    </div>
+  </section>
+
+  <section class="workspace-grid">
+    <div class="form-panel">
+      @if (isLoading()) {
+        <p class="loading-state">Loading claims service...</p>
+      } @else {
+        <app-claim-form (claimSubmitted)="submitClaim($event)" />
+      }
+    </div>
+    <app-claim-list [claims]="claims()" />
+  </section>
+</main>
