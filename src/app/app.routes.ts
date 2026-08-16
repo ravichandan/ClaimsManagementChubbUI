@@ -9,5 +9,12 @@ export const routes: Routes = [
 				(module) => module.ClaimsPageComponent
 			)
 	},
+	{
+		path: 'workload',
+		loadComponent: () =>
+			import('./features/workload/pages/workload-page/workload-page.component').then(
+				(module) => module.WorkloadPageComponent
+			)
+	},
 	{ path: '**', redirectTo: 'claims' }
 ];

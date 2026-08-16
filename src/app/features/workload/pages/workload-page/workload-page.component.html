@@ -1,0 +1,106 @@
+<main class="page-shell">
+  <section class="hero" aria-labelledby="page-title">
+    <div>
+      <p class="eyebrow">Claims operations / Workload</p>
+      <h1 id="page-title">Workload overview</h1>
+      <p class="hero-copy">A clear view of exposure, demand, and the work still waiting for attention.</p>
+    </div>
+    <div class="hero-mark" aria-hidden="true">
+      <span>WO</span>
+      <span class="mark-line"></span>
+    </div>
+  </section>
+
+  @if (errorMessage()) {
+    <div class="api-error" role="alert">
+      <span>{{ errorMessage() }}</span>
+      <button type="button" (click)="retryLoadingWorkload()">Try again</button>
+    </div>
+  }
+
+  @if (isLoading()) {
+    <section class="state-panel" aria-live="polite">Loading workload data...</section>
+  } @else if (workload(); as summary) {
+    <section class="metrics" aria-label="Workload summary">
+      <div class="metric-card exposure-card">
+        <span class="metric-label">Liability exposure</span>
+        <strong>{{ summary.liabilityExposure | currency: 'USD' : 'symbol' : '1.0-0' }}</strong>
+        <span class="metric-note">Total potential claim value</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Total claims</span>
+        <strong>{{ summary.totalClaims | number }}</strong>
+        <span class="metric-note">Across the current portfolio</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Outstanding claims</span>
+        <strong>{{ summary.outstandingClaims | number }}</strong>
+        <span class="metric-note">Still requiring an outcome</span>
+      </div>
+    </section>
+
+    <section class="workload-grid" aria-label="Detailed workload data">
+      <div class="summary-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Queue health</p>
+            <h2>Claim activity</h2>
+          </div>
+          <span class="refresh-note">Live from API</span>
+        </div>
+        <div class="activity-list">
+          <div class="activity-row">
+            <span>Assigned claims</span>
+            <strong>{{ summary.assignedClaims | number }}</strong>
+          </div>
+          <div class="activity-row">
+            <span>Currently under assessment</span>
+            <strong>{{ summary.underAssessment | number }}</strong>
+          </div>
+          <div class="activity-row">
+            <span>Unassigned claims</span>
+            <strong>{{ summary.unassignedClaims | number }}</strong>
+          </div>
+          <div class="activity-row">
+            <span>Outstanding claims</span>
+            <strong>{{ summary.outstandingClaims | number }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Team capacity</p>
+            <h2>Officer workload</h2>
+          </div>
+        </div>
+        <div class="officer-table" role="table" aria-label="Claims officer workload">
+          <div class="officer-row officer-header" role="row">
+            <span role="columnheader">Staff number</span>
+            <span role="columnheader">Assigned</span>
+            <span role="columnheader">Assessment</span>
+          </div>
+          @for (officer of summary.officerWorkloads; track officer.staffNumber) {
+            <div class="officer-row" role="row">
+              <div class="staff-cell" role="cell">
+                <strong>{{ officer.staffNumber }}</strong>
+                @if (officer.assignedClaimNumbers.length > 0) {
+                  <span>{{ officer.assignedClaimNumbers.join(', ') }}</span>
+                } @else {
+                  <span>No assigned claim numbers</span>
+                }
+              </div>
+              <span role="cell">{{ officer.assignedClaims | number }}</span>
+              <span role="cell">{{ officer.underAssessment | number }}</span>
+            </div>
+          } @empty {
+            <p class="empty-state">No officer workload data is available.</p>
+          }
+        </div>
+      </div>
+    </section>
+  } @else {
+    <section class="state-panel">No workload data is available.</section>
+  }
+</main>

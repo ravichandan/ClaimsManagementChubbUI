@@ -6,7 +6,7 @@ The UI provides a simple interface for claimants, claims officers and managers t
 
 ## What the UI covers
 
-Current plan is the application focuses on the main claim lifecycle:
+The application currently focuses on the main claim lifecycle:
 
 * Create and submit a claim
 * View claims and their current status
@@ -19,8 +19,6 @@ Current plan is the application focuses on the main claim lifecycle:
 
 The same Angular application is used by the different user types. The screens and available actions can be controlled based on the user's role.
 
-But given the time contraints, I dont think I can complete it whole as the frontend is given lower priority than backend.
-
 ## Tech stack
 
 * Angular
@@ -28,6 +26,7 @@ But given the time contraints, I dont think I can complete it whole as the front
 * Angular Router
 * Angular HttpClient
 * Reactive Forms
+* RxJS
 * CSS
 * REST APIs exposed by the Spring Boot backend
 
@@ -57,6 +56,10 @@ src/app/
 │   ├── workload/
 │   │   ├── components/
 │   │   │   └── workload-dashboard/
+│   │   ├── models/
+│   │   │   └── workload.model.ts
+│   │   ├── pages/
+│   │   │   └── workload-page/
 │   │   └── services/
 │   │       └── workload.service.ts
 │   │
@@ -74,12 +77,21 @@ I have kept the structure deliberately simple. As the application grows, new fun
 
 ### Claims
 
-The claims screen provides a list of claims and officer assigned to that
+The claims screen provides a list of claims with basic filtering by status, market and assigned officer.
+
+From here, a user can open an individual claim and see its current state and available actions.
 
 ### Claim details
 
 The claim details screen brings together the information needed to work on a claim:
 
+* Claimant information
+* Incident details
+* Current claim status
+* Assigned officer
+* Assessment information
+* Decision information
+* Status history
 
 The available actions depend on the current claim status and the user's role.
 
@@ -97,27 +109,20 @@ It provides a simple view of:
 
 The intention is to give managers a quick view rather than build a full reporting platform.
 
-## Multiple roles, one code
-```
-                    ClaimsManagementUI
-                        │
-                 Authentication
-                        │
-                 User + Role
-                  /          \
-                 /            \
-          Claimant          Claims Officer
-             │                    │
-             ▼                    ▼
-       Claimant UI          Officer UI
-       - My Claims           - Claim Queue
-       - Submit Claim        - Claim Details
-       - Claim Status        - Assessment & Decision
-                             - Workload
-```
 ## API integration
 
 The frontend communicates with the backend through REST APIs.
+
+### Primary API URLs
+
+These are the two main backend URLs used by the application:
+
+| Feature | HTTP method | Backend URL | Frontend screen |
+| --- | --- | --- | --- |
+| Claims | `GET`, `POST` | `http://localhost:8080/api/v1/claims` | `http://localhost:4200/claims` |
+| Workload | `GET` | `http://localhost:8080/api/v1/workload` | `http://localhost:4200/workload` |
+
+The claims screen uses the claims URL to load existing claims and submit new claims. The workload screen uses the workload URL to load total claims, liability exposure, queue activity and officer workload data.
 
 For example:
 
@@ -127,8 +132,11 @@ GET  /api/v1/claims/{id}
 POST /api/v1/claims
 POST /api/v1/claims/{id}/assignment
 POST /api/v1/claims/{id}/assessments
+POST /api/v1/claims/{id}/decision
 GET  /api/v1/workload
 ```
+
+The workload response is validated before it is rendered. The API returns a response envelope with `success`, `data`, `message` and `timestamp`. The nested data must include total claim count, USD liability exposure, assigned claims, claims under assessment, unassigned claims, outstanding claims and officer workload rows containing staff numbers and assigned claim numbers.
 
 API calls are kept inside feature-specific services rather than being made directly from components.
 
@@ -148,6 +156,26 @@ Spring Boot REST API
 ```
 
 This keeps components focused on presentation and user interaction.
+
+## Forms and validation
+
+Reactive Forms are used for claim creation, assessment and decision workflows.
+
+Validation is performed on the client for immediate feedback, but the backend remains the source of truth for business validation.
+
+For example, the UI can validate that:
+
+* Required fields have been entered
+* Monetary values are valid
+* Dates are in the expected format
+
+The backend is still responsible for rules such as:
+
+* A claim cannot be approved before it has been assessed
+* A claim cannot be assigned after it has been closed
+* A settlement amount must be valid for the decision
+
+This avoids duplicating business rules between the frontend and backend.
 
 ## Error handling
 
@@ -190,7 +218,19 @@ Start the development server:
 npm start
 ```
 
-The application should then be available through the Angular development server.
+The two frontend screens are available at:
+
+```text
+Claims:   http://localhost:4200/claims
+Workload:  http://localhost:4200/workload
+```
+
+The backend API URLs used by these screens are:
+
+```text
+Claims:   http://localhost:8080/api/v1/claims
+Workload:  http://localhost:8080/api/v1/workload
+```
 
 The Spring Boot backend needs to be running separately for the claim APIs to work.
 
@@ -221,6 +261,22 @@ Claimants, claims officers and managers use the same Angular application. Role-s
 ## Scope and future improvements
 
 The current UI is intentionally focused on the main business flows required for the assessment.
+
+## Production readiness roadmap
+
+When time permits, the following work should be completed before using the UI in production:
+
+* Move API URLs into environment-specific Angular configuration for local, test and production deployments.
+* Add authentication and role-based route guards for claimants, claims officers and managers.
+* Add HTTP interceptors for authentication headers, consistent error handling and request correlation IDs.
+* Replace component-level request state with a shared approach for caching, retries and stale data handling where needed.
+* Add comprehensive unit, integration and end-to-end tests for claims submission, API failures and workload reporting.
+* Improve accessibility verification with automated Axe checks and manual keyboard and screen-reader testing.
+* Add claim detail, assignment, assessment, decision and status-history workflows.
+* Add secure document upload, virus scanning and controlled document preview if claim evidence is required.
+* Add pagination, filtering and server-side sorting for larger claim queues.
+* Add observability, audit logging and performance monitoring for production support.
+* Add CI checks for formatting, linting, tests, security scanning and production builds.
 
 For a production implementation, I would consider adding:
 

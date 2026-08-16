@@ -1,0 +1,258 @@
+:host {
+  display: block;
+}
+
+.page-shell {
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 3.5rem clamp(1.25rem, 4vw, 4rem) 5rem;
+}
+
+.hero {
+  align-items: flex-end;
+  background: #1e4244;
+  border-radius: 6px;
+  color: #f8f7f1;
+  display: flex;
+  justify-content: space-between;
+  min-height: 15rem;
+  overflow: hidden;
+  padding: clamp(2rem, 5vw, 4rem);
+  position: relative;
+}
+
+.hero::after {
+  border: 1px solid rgba(245, 205, 146, 0.3);
+  border-radius: 50%;
+  content: '';
+  height: 26rem;
+  position: absolute;
+  right: -6rem;
+  top: -12rem;
+  width: 26rem;
+}
+
+.eyebrow {
+  color: #e1b15f;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.7rem;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.8rem, 7vw, 5.4rem);
+  line-height: 0.95;
+}
+
+h2 {
+  color: #1e2a2f;
+  font-size: 1.7rem;
+}
+
+.hero-copy {
+  color: #d6e1dc;
+  font-size: 1rem;
+  margin: 1rem 0 0;
+  max-width: 32rem;
+}
+
+.hero-mark {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 3.2rem;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.mark-line {
+  background: #e1b15f;
+  display: block;
+  height: 3px;
+  margin-top: 0.4rem;
+  width: 4.2rem;
+}
+
+.api-error {
+  align-items: center;
+  background: #fff1ed;
+  border: 1px solid #e4b8aa;
+  border-radius: 4px;
+  color: #963b2d;
+  display: flex;
+  font-size: 0.86rem;
+  font-weight: 700;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding: 0.85rem 1rem;
+}
+
+.api-error button {
+  background: transparent;
+  border: 1px solid #b64f30;
+  border-radius: 4px;
+  color: #963b2d;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.76rem;
+  padding: 0.45rem 0.7rem;
+  white-space: nowrap;
+}
+
+.state-panel {
+  background: #fff;
+  border: 1px solid #dfe4e3;
+  border-radius: 6px;
+  color: #66757a;
+  margin-top: 1.25rem;
+  padding: 2rem;
+}
+
+.metrics {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1.25fr 1fr 1fr;
+  margin: 1.25rem 0;
+}
+
+.metric-card,
+.summary-panel {
+  background: #fff;
+  border: 1px solid #dfe4e3;
+  border-radius: 6px;
+}
+
+.metric-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.25rem;
+}
+
+.exposure-card {
+  border-top: 3px solid #d29a3a;
+  padding-top: calc(1.25rem - 2px);
+}
+
+.metric-label,
+.metric-note,
+.refresh-note {
+  color: #78868a;
+  font-size: 0.75rem;
+}
+
+.metric-label {
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.metric-card strong {
+  color: #1e2a2f;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.workload-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.summary-panel {
+  padding: 1.5rem;
+}
+
+.section-heading {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.activity-list,
+.officer-table {
+  border-top: 1px solid #e8edeb;
+}
+
+.activity-row,
+.officer-row {
+  align-items: center;
+  border-bottom: 1px solid #e8edeb;
+  display: grid;
+  min-height: 3.25rem;
+}
+
+.activity-row {
+  grid-template-columns: 1fr auto;
+}
+
+.activity-row span,
+.officer-row span {
+  color: #66757a;
+  font-size: 0.84rem;
+}
+
+.activity-row strong,
+.officer-row strong {
+  color: #28373c;
+  font-size: 0.86rem;
+}
+
+.officer-row {
+  gap: 1rem;
+  grid-template-columns: 1.2fr 0.7fr 0.8fr;
+}
+
+.officer-header {
+  color: #78868a;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  min-height: 2.5rem;
+  text-transform: uppercase;
+}
+
+.empty-state {
+  color: #78868a;
+  font-size: 0.86rem;
+  padding: 1rem 0;
+}
+
+@media (max-width: 800px) {
+  .metrics,
+  .workload-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .page-shell {
+    padding-top: 1.25rem;
+  }
+
+  .hero {
+    min-height: 13rem;
+  }
+
+  .hero-mark {
+    display: none;
+  }
+
+  .officer-row {
+    grid-template-columns: 1fr 0.7fr 0.8fr;
+  }
+}
