@@ -97,6 +97,24 @@ It provides a simple view of:
 
 The intention is to give managers a quick view rather than build a full reporting platform.
 
+## Multiple roles, one code
+```
+                    ClaimsManagementUI
+                        │
+                 Authentication
+                        │
+                 User + Role
+                  /          \
+                 /            \
+          Claimant          Claims Officer
+             │                    │
+             ▼                    ▼
+       Claimant UI          Officer UI
+       - My Claims           - Claim Queue
+       - Submit Claim        - Claim Details
+       - Claim Status        - Assessment & Decision
+                             - Workload
+```
 ## API integration
 
 The frontend communicates with the backend through REST APIs.
